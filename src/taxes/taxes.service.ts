@@ -6,6 +6,8 @@ import { TaxRecordResponseDto } from './dto/tax-record-response.dto';
 import { TaxRecord } from 'src/entities/tax-record.entity';
 import { LandPlot } from 'src/entities/land-plot.entity';
 import { User } from 'src/entities/user.entity';
+import { RabbitMQService } from "src/rabbitmq/rabbitmq.service";
+import { NotificationService } from "src/notification/notification.service";
 
 @Injectable()
 export class TaxesService {
@@ -16,6 +18,8 @@ export class TaxesService {
     private readonly landPlotRepo: Repository<LandPlot>,
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
+    private rabbitMQ: RabbitMQService,
+    private notificationService: NotificationService,
   ) {}
 
   async calculateTaxForPlot(plotId: string): Promise<CalculateTaxDto> {
@@ -28,9 +32,7 @@ export class TaxesService {
       throw new Error('Land plot not found');
     }
 
-    const taxAmount = plot.areaHectares * 1000;
     const currentYear = new Date().getFullYear();
-    const dueDate = new Date(currentYear, 11, 31);
     const existingTax = plot.taxRecords.find(
       (tax) => tax.dueDate.getFullYear() === currentYear,
     );
@@ -46,24 +48,47 @@ export class TaxesService {
         isPaid: existingTax.isPaid,
       };
     }
-    const newTax = this.taxRecordRepo.create({
-      amount: taxAmount,
-      dueDate,
-      isPaid: false,
-      landPlot: plot,
-    });
 
-    await this.taxRecordRepo.save(newTax);
+    await this.rabbitMQ.publishToQueue('tax_calculations', {
+      plotId,
+      areaHectares: plot.areaHectares,
+      currentYear,
+      requestedAt: new Date(),
+    });
 
     return {
       landPlotId: plot.id,
       parcelNumber: plot.parcelNumber,
       areaHectares: plot.areaHectares,
       taxYear: currentYear,
-      taxAmount,
-      dueDate,
+      taxAmount: 0,
+      dueDate: null,
       isPaid: false,
     };
+  }
+
+  private async processTaxCalculation(message: {
+    plotId: string;
+    areaHectares: number;
+    currentYear: number;
+  }) {
+    const taxAmount = message.areaHectares * 1000;
+    const dueDate = new Date(message.currentYear, 11, 31);
+
+    const newTax = this.taxRecordRepo.create({
+      amount: taxAmount,
+      dueDate,
+      isPaid: false,
+      landPlot: { id: message.plotId },
+    });
+
+    await this.taxRecordRepo.save(newTax);
+
+    await this.notificationService.sendTaxCalculationComplete(
+      message.plotId,
+      taxAmount,
+      dueDate,
+    );
   }
 
   async payTax(taxRecordId: string): Promise<TaxRecordResponseDto> {

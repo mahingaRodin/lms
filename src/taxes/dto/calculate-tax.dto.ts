@@ -4,6 +4,6 @@ export class CalculateTaxDto {
   areaHectares: number;
   taxYear: number;
   taxAmount: number;
-  dueDate: Date;
+  dueDate: Date | null;
   isPaid: boolean;
 }

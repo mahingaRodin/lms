@@ -11,6 +11,8 @@ import { ConflictResolutionModule } from './conflict-resolution/conflict-resolut
 import { ConstructionModule } from './construction/construction.module';
 import { SettingsModule } from './settings/settings.module';
 import { RedisModule } from './redis/redis.module';
+import { NotificationService } from './notification/notification.service';
+import { RabbitMQModule } from "./rabbitmq/rabbitmq.module";
 
 @Module({
   imports: [
@@ -33,8 +35,9 @@ import { RedisModule } from './redis/redis.module';
     ConstructionModule,
     SettingsModule,
     RedisModule,
+    RabbitMQModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, NotificationService],
 })
 export class AppModule {}
