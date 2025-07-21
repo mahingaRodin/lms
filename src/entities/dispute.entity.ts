@@ -19,6 +19,9 @@ export class Dispute {
   @Column({ type: 'text' })
   description: string;
 
+  @Column({ type: 'text', nullable: true })
+  resolutionNotes?: string;
+
   @Column({ type: 'enum', enum: DisputeStatus, default: DisputeStatus.PENDING })
   status: DisputeStatus;
 

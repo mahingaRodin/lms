@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { LandRegistrationModule } from './land-registration/land-registration.module';
 import { LandTransferModule } from './land-transfer/land-transfer.module';
 import { TaxesModule } from './taxes/taxes.module';
+import { ConflictResolutionModule } from './conflict-resolution/conflict-resolution.module';
 
 @Module({
   imports: [
@@ -19,12 +20,13 @@ import { TaxesModule } from './taxes/taxes.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
     }),
     AuthModule,
     LandRegistrationModule,
     LandTransferModule,
     TaxesModule,
+    ConflictResolutionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,3 +1,4 @@
+// src/modules/taxes/taxes.controller.ts
 import {
   Controller,
   Get,
@@ -6,18 +7,13 @@ import {
   Param,
   UseGuards,
   Req,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { TaxesService } from './taxes.service';
 import { PayTaxDto } from './dto/pay-tax.dto';
 import { Request } from 'express';
-import { JwtAuthGuard } from "src/guard/jwt.guard";
-import { User, UserRole } from "src/entities/user.entity";
-import { Roles } from "src/decorators/roles.decorator";
-
-interface RequestWithUser extends Request {
-  user: User;
-}
+import { JwtAuthGuard } from 'src/guard/jwt.guard';
+import { UserRole } from 'src/entities/user.entity';
+import { Roles } from 'src/decorators/roles.decorator';
 
 @Controller('taxes')
 @UseGuards(JwtAuthGuard)
@@ -44,13 +40,7 @@ export class TaxesController {
 
   @Get('my-taxes')
   @Roles(UserRole.CITIZEN)
-  async getUserTaxes(@Req() req: Request) {
-    const { user } = req as RequestWithUser;
-
-    if (!user?.id) {
-      throw new UnauthorizedException('User not authenticated');
-    }
-
-    return this.taxesService.getUserTaxRecords(user.id);
+  async getUserTaxes(@Req() req) {
+    return this.taxesService.getUserTaxRecords(req.user.id);
   }
 }
