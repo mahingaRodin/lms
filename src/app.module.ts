@@ -8,6 +8,7 @@ import { LandRegistrationModule } from './land-registration/land-registration.mo
 import { LandTransferModule } from './land-transfer/land-transfer.module';
 import { TaxesModule } from './taxes/taxes.module';
 import { ConflictResolutionModule } from './conflict-resolution/conflict-resolution.module';
+import { ConstructionModule } from './construction/construction.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ConflictResolutionModule } from './conflict-resolution/conflict-resolut
     LandTransferModule,
     TaxesModule,
     ConflictResolutionModule,
+    ConstructionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
