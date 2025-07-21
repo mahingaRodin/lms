@@ -19,8 +19,14 @@ export class LandPlot {
   @Column({ unique: true })
   parcelNumber: string;
 
+  @Column()
+  address: string;
+
   @Column({ type: 'float' })
   areaHectares: number;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 
   @OneToMany(() => LandOwner, (owner) => owner.landPlot)
   owners: LandOwner[];

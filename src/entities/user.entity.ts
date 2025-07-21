@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { LandOwner } from "./land-owner.entity";
-import { Dispute } from "./dispute.entity";
-import { ConstructionPermit } from "./construction-permit.entity";
+import { LandOwner } from './land-owner.entity';
+import { Dispute } from './dispute.entity';
+import { ConstructionPermit } from './construction-permit.entity';
 
 export enum UserRole {
   CITIZEN = 'citizen',
@@ -10,7 +10,7 @@ export enum UserRole {
   URBAN_PLANNER = 'urban_planner',
 }
 
-@Entity()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
+import { LandRegistrationModule } from './land-registration/land-registration.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ConfigModule } from '@nestjs/config';
       synchronize: false,
     }),
     AuthModule,
+    LandRegistrationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
