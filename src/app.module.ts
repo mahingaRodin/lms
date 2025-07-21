@@ -9,6 +9,7 @@ import { LandTransferModule } from './land-transfer/land-transfer.module';
 import { TaxesModule } from './taxes/taxes.module';
 import { ConflictResolutionModule } from './conflict-resolution/conflict-resolution.module';
 import { ConstructionModule } from './construction/construction.module';
+import { SettingsModule } from './settings/settings.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ConstructionModule } from './construction/construction.module';
     TaxesModule,
     ConflictResolutionModule,
     ConstructionModule,
+    SettingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
