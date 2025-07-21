@@ -15,16 +15,24 @@ import { ApproveTransferDto } from './dto/approve-transfer.dto';
 import { JwtAuthGuard } from 'src/guard/jwt.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { User, UserRole } from 'src/entities/user.entity';
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 interface RequestWithUser extends Request {
   user: User;
 }
 
+
+@ApiTags('Land Transfers')
 @Controller('land-transfers')
 @UseGuards(JwtAuthGuard)
 export class LandTransferController {
   constructor(private readonly transferService: LandTransferService) {}
 
+  @ApiOperation({ summary: 'Transfer Ownership' })
+  @ApiResponse({
+    status: 201,
+    description: 'Ownership successfully transferred',
+  })
   @Post('transfer')
   async transferOwnership(
     @Body() dto: { landPlotId: string; newOwnerId: string },

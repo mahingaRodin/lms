@@ -15,12 +15,19 @@ import { InspectionReportDto } from './dto/inspection-report.dto';
 import { JwtAuthGuard } from 'src/guard/jwt.guard';
 import { UserRole } from 'src/entities/user.entity';
 import { Roles } from 'src/decorators/roles.decorator';
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Construction Permits')
 @Controller('permits')
 @UseGuards(JwtAuthGuard)
 export class ConstructionController {
   constructor(private readonly constructionService: ConstructionService) {}
 
+  @ApiOperation({ summary: 'Applying for land perit' })
+  @ApiResponse({
+    status: 201,
+    description: 'Land plot successfully registered',
+  })
   @Post()
   @Roles(UserRole.CITIZEN)
   async applyForPermit(@Req() req, @Body() createDto: CreatePermitDto) {
