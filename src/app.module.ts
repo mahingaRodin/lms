@@ -10,6 +10,7 @@ import { TaxesModule } from './taxes/taxes.module';
 import { ConflictResolutionModule } from './conflict-resolution/conflict-resolution.module';
 import { ConstructionModule } from './construction/construction.module';
 import { SettingsModule } from './settings/settings.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { SettingsModule } from './settings/settings.module';
     ConflictResolutionModule,
     ConstructionModule,
     SettingsModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],

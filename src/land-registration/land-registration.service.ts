@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateLandPlotDto } from './dto/create-land-plot.dto';
@@ -8,6 +8,8 @@ import { LandOwner } from 'src/entities/land-owner.entity';
 import { LandPlotResponseDto } from './dto/land-response.dto';
 import { OwnerResponseDto } from './dto/owner-response.dto';
 import { NotFoundException } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class LandRegistrationService {
@@ -16,6 +18,7 @@ export class LandRegistrationService {
     private readonly landPlotRepository: Repository<LandPlot>,
     @InjectRepository(LandOwner)
     private readonly landOwnerRepository: Repository<LandOwner>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async registerLandPlot(
@@ -69,6 +72,14 @@ export class LandRegistrationService {
   }
 
   async getLandPlotById(id: string): Promise<LandPlotResponseDto> {
+    const cacheKey = `landplot:${id}`;
+
+    const cachedData =
+      await this.cacheManager.get<LandPlotResponseDto>(cacheKey);
+    if (cachedData) {
+      return cachedData;
+    }
+
     const landPlot = await this.landPlotRepository.findOne({
       where: { id },
       relations: ['owners', 'owners.user'],
@@ -85,13 +96,17 @@ export class LandRegistrationService {
       ownershipType: owner.ownershipType,
     }));
 
-    return new LandPlotResponseDto({
+    const response = new LandPlotResponseDto({
       id: landPlot.id,
       parcelNumber: landPlot.parcelNumber,
       areaHectares: landPlot.areaHectares,
       address: landPlot.address,
       owners: transformedOwners,
     });
+    const ttl = process.env.REDIS_TTL ? parseInt(process.env.REDIS_TTL, 10) : 3600;
+    await this.cacheManager.set(cacheKey, response, ttl);
+
+    return response;
   }
 
   async getAllLandPlots(): Promise<LandPlotResponseDto[]> {
