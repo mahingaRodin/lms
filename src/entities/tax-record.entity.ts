@@ -16,7 +16,6 @@ export class TaxRecord {
   @Column({ default: false })
   isPaid: boolean;
 
-  // Relationships
   @ManyToOne(() => LandPlot, (plot) => plot.taxRecords)
   landPlot: LandPlot;
 }

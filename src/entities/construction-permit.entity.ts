@@ -4,9 +4,11 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 import { User } from "./user.entity";
 import { LandPlot } from "./land-plot.entity";
+import { Inspection } from "./inspection.entity";
 
 export enum PermitStatus {
   PENDING = 'pending',
@@ -28,10 +30,12 @@ export class ConstructionPermit {
   @Column({ type: 'enum', enum: PermitStatus, default: PermitStatus.PENDING })
   status: PermitStatus;
 
-  // Relationships
   @ManyToOne(() => User, (user) => user.permits)
   applicant: User;
 
   @OneToOne(() => LandPlot, (plot) => plot.constructionPermit)
   landPlot: LandPlot;
+
+  @OneToMany(() => Inspection, (inspection) => inspection.permit)
+  inspections: Inspection[];
 }

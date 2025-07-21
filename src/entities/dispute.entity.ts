@@ -22,7 +22,6 @@ export class Dispute {
   @Column({ type: 'enum', enum: DisputeStatus, default: DisputeStatus.PENDING })
   status: DisputeStatus;
 
-  // Relationships
   @ManyToOne(() => User, (user) => user.disputesReported)
   reporter: User;
 
