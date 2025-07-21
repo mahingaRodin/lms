@@ -42,7 +42,7 @@ export class LandTransferController {
   }
 
   @Get('pending')
-  //   @Roles(UserRole.ADMIN)
+    @Roles(UserRole.ADMIN)
   async getPendingTransfers() {
     return this.transferService.getPendingTransfers();
   }
