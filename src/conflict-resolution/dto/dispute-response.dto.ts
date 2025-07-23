@@ -20,7 +20,8 @@ export class DisputeResponseDto {
   landPlot: {
     id: string;
     parcelNumber: string;
-    address: string;
+    boundary: GeoJSON.Polygon;
+    areaHectares: number;
   };
 
   @Expose()

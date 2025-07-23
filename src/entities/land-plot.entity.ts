@@ -9,7 +9,8 @@ import {
 import { LandOwner } from './land-owner.entity';
 import { TaxRecord } from './tax-record.entity';
 import { Dispute } from './dispute.entity';
-import { ConstructionPermit } from "./construction-permit.entity";
+import { Polygon } from 'geojson';
+import { ConstructionPermit } from './construction-permit.entity';
 
 @Entity()
 export class LandPlot {
@@ -19,8 +20,12 @@ export class LandPlot {
   @Column({ unique: true })
   parcelNumber: string;
 
-  @Column()
-  address: string;
+  @Column({
+    type: 'geography',
+    spatialFeatureType: 'Polygon',
+    srid: 4326,
+  })
+  boundary: Polygon;
 
   @Column({ type: 'float' })
   areaHectares: number;

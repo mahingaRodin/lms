@@ -1,11 +1,12 @@
-import { IsString, IsNumber, IsPositive } from 'class-validator';
+import { IsString, IsNumber, IsPositive, IsObject } from 'class-validator';
+import { Polygon } from 'geojson';
 
 export class CreateLandPlotDto {
   @IsString()
-  address: string;
-
-  @IsString()
   parcelNumber: string;
+
+  @IsObject()
+  boundary: Polygon;
 
   @IsNumber()
   @IsPositive()

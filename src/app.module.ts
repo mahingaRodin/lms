@@ -26,6 +26,9 @@ import { RabbitMQModule } from "./rabbitmq/rabbitmq.module";
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
+      extra: {
+        installExtensions: true,
+      },
     }),
     AuthModule,
     LandRegistrationModule,

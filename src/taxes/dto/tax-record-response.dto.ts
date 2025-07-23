@@ -17,7 +17,8 @@ export class TaxRecordResponseDto {
   landPlot: {
     id: string;
     parcelNumber: string;
-    address: string;
+    boundary: GeoJSON.Polygon;
+    areaHectares: number;
   };
 
   constructor(partial: Partial<TaxRecordResponseDto>) {

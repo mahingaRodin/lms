@@ -1,11 +1,13 @@
-import { Exclude } from 'class-transformer';
-import { OwnerResponseDto } from "./owner-response.dto";
+import { Exclude, Expose } from 'class-transformer';
+import { OwnerResponseDto } from './owner-response.dto';
+import { Polygon } from 'geojson';
 
 export class LandPlotResponseDto {
   id: string;
   parcelNumber: string;
-    areaHectares: number;
-    address: string;
+  areaHectares: number;
+  boundary: Polygon;
+  createdAt: Date;
   owners: OwnerResponseDto[];
 
   @Exclude()
