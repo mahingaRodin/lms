@@ -7,6 +7,7 @@ export class LandPlotResponseDto {
   parcelNumber: string;
   areaHectares: number;
   boundary: Polygon;
+  address: string;
   createdAt: Date;
   owners: OwnerResponseDto[];
 

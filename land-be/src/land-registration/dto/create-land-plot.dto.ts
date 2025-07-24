@@ -8,6 +8,21 @@ export class CreateLandPlotDto {
   @IsObject()
   boundary: Polygon;
 
+  @IsString()
+  province: string;
+
+  @IsString()
+  district: string;
+
+  @IsString()
+  sector: string;
+
+  @IsString()
+  cell: string;
+
+  @IsString()
+  village: string;
+
   @IsNumber()
   @IsPositive()
   areaHectares: number;

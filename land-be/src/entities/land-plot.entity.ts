@@ -27,6 +27,9 @@ export class LandPlot {
   })
   boundary: Polygon;
 
+  @Column()
+  address: string;
+
   @Column({ type: 'float' })
   areaHectares: number;
 

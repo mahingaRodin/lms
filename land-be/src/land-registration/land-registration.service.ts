@@ -26,7 +26,17 @@ export class LandRegistrationService {
   ): Promise<LandPlotResponseDto> {
     this.validatePolygon(createDto.boundary);
 
-    const landPlot = this.landPlotRepository.create(createDto);
+    const addressArr = [
+      createDto.province,
+      createDto.district,
+      createDto.sector,
+      createDto.cell,
+      createDto.village,
+    ];
+
+    const address = addressArr.join('/');
+
+    const landPlot = this.landPlotRepository.create({ ...createDto, address });
     const savedPlot = await this.landPlotRepository.save(landPlot);
 
     const fullPlot = await this.landPlotRepository.findOne({
@@ -51,6 +61,7 @@ export class LandRegistrationService {
       parcelNumber: fullPlot.parcelNumber,
       areaHectares: fullPlot.areaHectares,
       boundary: fullPlot.boundary,
+      address: fullPlot.address,
       createdAt: fullPlot.createdAt,
       owners: transformedOwners,
     });
