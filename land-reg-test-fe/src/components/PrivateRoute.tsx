@@ -3,10 +3,9 @@ import { useAuth } from "../context/AuthContext";
 
 const PrivateRoute = () => {
   const { isAuthenticated } = useAuth();
-  const location = useLocation(); // Proper way to get current location
+  const location = useLocation();
 
   if (!isAuthenticated) {
-    // Redirect to login, saving the current location
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 

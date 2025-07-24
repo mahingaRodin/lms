@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { TextField, Button, Container, Typography, Box } from '@mui/material';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { TextField, Button, Container, Typography, Box } from "@mui/material";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -14,9 +14,8 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       await login(email, password);
-      navigate('/');
     } catch (err) {
-      setError('Invalid credentials');
+      setError("Invalid credentials");
     }
   };
 
@@ -25,9 +24,9 @@ export default function LoginPage() {
       <Box
         sx={{
           mt: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <Typography variant="h4" gutterBottom>
@@ -37,7 +36,7 @@ export default function LoginPage() {
         <Box
           component="form"
           onSubmit={handleSubmit}
-          sx={{ mt: 1, width: '100%' }}
+          sx={{ mt: 1, width: "100%" }}
         >
           <TextField
             margin="normal"
@@ -59,6 +58,7 @@ export default function LoginPage() {
           />
           <Button
             type="submit"
+            onClick={handleSubmit}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

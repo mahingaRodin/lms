@@ -4,6 +4,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import LoginPage from "./pages/LoginPage";
 import RegisterLandPage from "./pages/RegisterLandPage";
 import ViewLandsPage from "./pages/ViewLandsPage";
+import ProtectedLayout from "./components/ProtectedLayout";
 
 function App() {
   return (
@@ -15,12 +16,14 @@ function App() {
 
           {/* Protected routes */}
           <Route element={<PrivateRoute />}>
-            <Route path="/register-land" element={<RegisterLandPage />} />
-            <Route path="/view-lands" element={<ViewLandsPage />} />
-            <Route
-              path="/"
-              element={<Navigate to="/register-land" replace />}
-            />
+            <Route element={<ProtectedLayout />}>
+              <Route path="/register-land" element={<RegisterLandPage />} />
+              <Route path="/view-lands" element={<ViewLandsPage />} />
+              <Route
+                path="/"
+                element={<Navigate to="/register-land" replace />}
+              />
+            </Route>
           </Route>
 
           {/* Catch-all route */}

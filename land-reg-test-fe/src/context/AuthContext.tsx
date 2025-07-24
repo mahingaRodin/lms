@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from 'react';
-import axios from 'axios';
+import { createContext, useContext, useState } from "react";
+import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 
 interface AuthContextType {
@@ -13,29 +13,31 @@ const AuthContext = createContext<AuthContextType>(null!);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(
-    localStorage.getItem('token'),
+    localStorage.getItem("token")
   );
   const navigate = useNavigate();
   const location = useLocation();
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await axios.post('http://localhost:3000/auth/login', {
+      const response = await axios.post("http://localhost:3000/auth/login", {
         email,
         password,
       });
       const { token } = response.data;
-      localStorage.setItem('token', token);
+      localStorage.setItem("token", token);
       setToken(token);
-         const from = location.state?.from?.pathname || "/register-land";
-         navigate(from, { replace: true });
+
+      // 👇 Redirect to previous location or default
+      const from = (location.state as any)?.from?.pathname || "/register-land";
+      navigate(from, { replace: true });
     } catch (error) {
-      throw new Error('Login failed');
+      throw new Error("Login failed");
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setToken(null);
   };
 
