@@ -12,7 +12,7 @@ import { ConstructionModule } from './construction/construction.module';
 import { SettingsModule } from './settings/settings.module';
 import { RedisModule } from './redis/redis.module';
 import { NotificationService } from './notification/notification.service';
-import { RabbitMQModule } from "./rabbitmq/rabbitmq.module";
+import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { RabbitMQModule } from "./rabbitmq/rabbitmq.module";
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
       extra: {
         installExtensions: true,
       },

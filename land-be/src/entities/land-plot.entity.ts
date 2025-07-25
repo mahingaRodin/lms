@@ -27,7 +27,7 @@ export class LandPlot {
   })
   boundary: Polygon;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false, default: '' })
   address: string;
 
   @Column({ type: 'float' })
